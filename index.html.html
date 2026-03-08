@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Artificial Intelligence — Jun'dabi Abdul Kazembe</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ═══════════════════════════════════════════
+ DESIGN LANGUAGE
+ Warm cream pages · Forest green accents
+ Deep navy text · Amber highlights
+ Elegant editorial — like a premium textbook
+═══════════════════════════════════════════ */
+:root {
+ /* Page */
+ --page-bg: #faf8f3;
+ --page-w: 210mm;
+ --margin: 16mm;
+
+ /* Text */
+ --ink: #1c2333;
+ --ink-mid: #3d4a5c;
+ --ink-dim: #6b7a91;
+ --ink-faint: #a8b4c2;
+
+ /* Accents */
+ --forest: #1e5c45;
+ --forest-bg: #eef7f3;
+ --forest-mid: #2d7a5e;
+ --amber: #b45309;
+ --amber-bg: #fef3e2;
+ --amber-mid: #d97706;
+ --crimson: #9b1c2e;
+ --crimson-bg: #fdf2f4;
+ --slate: #1e3a5f;
+ --slate-bg: #eff4fb;
+ --slate-mid: #2d5f9e;
+
+ /* Structural */
+ --rule: #ddd8ce;
+ --rule-light: #ece8e0;
+ --surface: #f3f0e8;
+ --card-bg: #ffffff;
+
+ /* Typography */
+ --font-body: 'Lora', Georgia, serif;
+ --font-head: 'Plus Jakarta Sans', system-ui, sans-serif;
+ --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+ font-family: var(--font-body);
+ font-size: 10.5pt;
+ line-height: 1.8;
+ color: var(--ink);
+ background: #d8d0c4;
+}
+
+/* ═══════════════════════════════════════════
+ PAGE
+═══════════════════════════════════════════ */
+.page {
+ width: var(--page-w);
+ min-height: 297mm;
+ background: var(--page-bg);
+ margin: 0 auto 14px;
+ position: relative;
+ overflow: hidden;
+}
+
+.page-inner {
+ padding: var(--margin);
+ padding-top: 10mm;
+ padding-bottom: 18mm;
+}
+
+/* subtle texture overlay */
+.page::before {
+ content:'';
+ position:absolute; inset:0; pointer-events:none;
+ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23faf8f3'/%3E%3Crect x='0' y='0' width='1' height='1' fill='%23c8c0b0' opacity='0.12'/%3E%3C/svg%3E");
+ opacity:.5; z-index:0;
+}
+.page > * { position:relative; z-index:1; }
+
+/* ═══════════════════════════════════════════
+ COVER PAGE — Bold, Rich, Editorial
+═══════════════════════════════════════════ */
+.cover {
+ min-height: 297mm;
+ display: flex;
+ flex-direction: column;
+ background: #0f1c14;
+ color: #f0ede6;
+ padding: 0;
+ position: relative;
+ overflow: hidden;
+}
+
+/* Full-bleed gradient background */
+.cover-bg {
+ position:absolute; inset:0;
+ background:
+ radial-gradient(ellipse 120mm 100mm at 75% 20%, rgba(30,92,69,0.55) 0%, transparent 70%),
+ radial-gradient(ellipse 90mm 80mm at 20% 80%, rgba(180,83,9,0.35) 0%, transparent 65%),
+ radial-gradient(ellipse 60mm 60mm at 90% 90%, rgba(30,58,95,0.4) 0%, transparent 60%),
+ linear-gradient(165deg, #0a1610 0%, #0f1c14 40%, #111820 100%);
+ pointer-events:none;
+}
+
+/* Fine grid overlay */
+.cover-grid {
+ position:absolute; inset:0; pointer-events:none;
+ background-image:
+ repeating-linear-gradient(0deg, transparent, transparent 7mm, rgba(255,255,255,0.025) 7.1mm),
+ repeating-linear-gradient(90deg, transparent, transparent 7mm, rgba(255,255,255,0.025) 7.1mm);
+}
+
+/* Accent bar left edge */
+.cover-accent-bar {
+ position:absolute; left:0; top:0; bottom:0; width:5mm;
+ background: linear-gradient(180deg, #1e5c45 0%, #2d7a5e 40%, #b45309 75%, #1e3a5f 100%);
+}
+
+/* Big circle decorative */
+.cover-circle {
+ position:absolute; right:-30mm; top:-20mm;
+ width:110mm; height:110mm; border-radius:50%;
+ border:1px solid rgba(30,92,69,0.35);
+ pointer-events:none;
+}
+.cover-circle2 {
+ position:absolute; right:-18mm; top:-8mm;
+ width:78mm; height:78mm; border-radius:50%;
+ border:1px solid rgba(30,92,69,0.2);
+ pointer-events:none;
+}
+.cover-circle3 {
+ position:absolute; left:30mm; bottom:-15mm;
+ width:55mm; height:55mm; border-radius:50%;
+ border:1px solid rgba(180,83,9,0.2);
+ pointer-events:none;
+}
+
+/* Content wrapper with left padding for accent bar */
+.cover-content {
+ position:relative; z-index:2;
+ padding: 14mm 14mm 14mm 21mm;
+ display:flex; flex-direction:column; min-height:297mm;
+}
+
+.cover-eyebrow {
+ font-family: var(--font-mono);
+ font-size: 7pt; letter-spacing:.22em; text-transform:uppercase;
+ color: #7ecfb5;
+ margin-bottom: 12mm;
+ display:flex; align-items:center; gap:10px;
+}
+.cover-eyebrow::before {
+ content:''; display:block;
+ width:28px; height:1.5px; background:#7ecfb5; flex-shrink:0;
+}
+
+/* Large title block */
+.cover-title-block { margin-bottom:8mm; }
+.cover-pre-title {
+ font-family:var(--font-head); font-size:9pt; font-weight:600;
+ letter-spacing:.18em; text-transform:uppercase;
+ color:rgba(126,207,181,0.6); margin-bottom:4mm; display:block;
+}
+.cover h1 {
+ font-family: var(--font-head);
+ font-size: 46pt; font-weight:800; line-height:.98;
+ color: #ffffff; letter-spacing:-.04em; margin-bottom:0;
+}
+.cover h1.line1 { display:block; color:#ffffff; }
+.cover h1.line2 { display:block; color:#7ecfb5; font-style:italic; }
+.cover h1.line3 { display:block; color:rgba(255,255,255,0.75); font-size:32pt; letter-spacing:-.01em; }
+
+/* Divider with icon */
+.cover-rule-group { margin:7mm 0; display:flex; align-items:center; gap:10px; }
+.cover-rule-line { flex:1; height:1px; background:linear-gradient(90deg, #7ecfb5, rgba(126,207,181,0.1)); }
+.cover-rule-dot { width:6px; height:6px; border-radius:50%; background:#7ecfb5; flex-shrink:0; }
+
+.cover-desc {
+ font-family: var(--font-body);
+ font-size: 10.5pt; font-style:italic; font-weight:400;
+ color: rgba(240,237,230,0.68); line-height:1.75;
+ max-width: 140mm; margin-bottom:10mm;
+}
+
+/* Stats strip */
+.cover-stats {
+ display:flex; gap:0; margin-bottom:10mm;
+ border:1px solid rgba(255,255,255,0.1); overflow:hidden;
+}
+.cover-stat {
+ flex:1; padding:8px 10px; text-align:center;
+ border-right:1px solid rgba(255,255,255,0.08);
+ background:rgba(255,255,255,0.03);
+}
+.cover-stat:last-child { border-right:none; }
+.cs-num {
+ font-family:var(--font-head); font-size:15pt; font-weight:800;
+ color:#7ecfb5; line-height:1; display:block; margin-bottom:2px;
+}
+.cs-label {
+ font-family:var(--font-mono); font-size:6pt; letter-spacing:.12em;
+ text-transform:uppercase; color:rgba(240,237,230,0.4);
+}
+
+/* chapter index */
+.cover-author {
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  padding: 9px 0;
+  margin-bottom: 8mm;
+}
+.ca-name {
+  font-family: var(--font-head);
+  font-size: 13pt; font-weight: 800;
+  color: #ffffff; letter-spacing: -.01em;
+  margin-bottom: 5px;
+}
+.ca-roles {
+  display: flex; flex-wrap: wrap; gap: 4px 0;
+  align-items: center;
+}
+.ca-role {
+  font-family: var(--font-mono);
+  font-size: 6.5pt; font-weight: 500;
+  color: #7ecfb5; letter-spacing: .1em; text-transform: uppercase;
+}
+.ca-sep {
+  font-family: var(--font-mono);
+  font-size: 6.5pt; color: rgba(255,255,255,0.2);
+  margin: 0 6px;
+}
+
+.toc-grid {
+ display:grid; grid-template-columns:1fr 1fr;
+ gap: 1px; background:rgba(255,255,255,0.07);
+ border:1px solid rgba(255,255,255,0.07); margin-bottom:auto;
+}
+.toc-item {
+ background: rgba(255,255,255,0.03);
+ padding: 6px 11px;
+ display:flex; align-items:center; gap:9px;
+ transition: background.15s;
+}
+.toc-num {
+ font-family:var(--font-mono); font-size:7pt;
+ color:#7ecfb5; min-width:20px; font-weight:500;
+}
+.toc-label {
+ font-family:var(--font-head); font-size:7pt;
+ font-weight:600; color:rgba(240,237,230,0.7); letter-spacing:.02em;
+}
+
+.cover-footer {
+ margin-top:10mm; border-top:1px solid rgba(255,255,255,0.1);
+ padding-top:8px; display:flex; justify-content:space-between; align-items:center;
+ font-family:var(--font-mono); font-size:7pt; color:rgba(240,237,230,0.3);
+}
+.cover-footer strong { color:#7ecfb5; font-weight:500; font-size:8pt; }
+
+/* ═══════════════════════════════════════════
+ RUNNING HEADER
+═══════════════════════════════════════════ */
+.rh {
+ padding: 8px var(--margin) 8px;
+ border-bottom: 1px solid var(--rule);
+ display:flex; justify-content:space-between; align-items:center;
+ font-family:var(--font-mono); font-size:7pt; color:var(--ink-faint);
+ letter-spacing:.08em; text-transform:uppercase;
+ background: var(--page-bg);
+}
+.rh-right { color:var(--forest); font-weight:500; }
+
+/* ═══════════════════════════════════════════
+ CHAPTER HEADINGS
+═══════════════════════════════════════════ */
+.ch-tag {
+ display:inline-block;
+ font-family:var(--font-mono); font-size:7pt; font-weight:500;
+ letter-spacing:.2em; text-transform:uppercase;
+ color:var(--forest); margin-bottom:6px;
+}
+
+h2 {
+ font-family: var(--font-head);
+ font-size: 22pt; font-weight:800; line-height:1.1;
+ color: var(--ink); letter-spacing:-.025em; margin-bottom:4mm;
+}
+
+.lead {
+ font-size:11.5pt; font-style:italic; font-weight:400;
+ color: var(--ink-mid); line-height:1.65; margin-bottom:5mm;
+ padding-bottom:5mm; border-bottom:2px solid var(--rule);
+}
+
+h3 {
+ font-family: var(--font-head);
+ font-size:13pt; font-weight:700; color:var(--ink);
+ margin: 6mm 0 3mm; letter-spacing:-.01em;
+}
+
+h4 {
+ font-family: var(--font-head);
+ font-size:9.5pt; font-weight:700; color:var(--amber);
+ letter-spacing:.03em; text-transform:uppercase;
+ margin:5mm 0 2mm; display:flex; align-items:center; gap:7px;
+}
+h4::before {
+ content:''; display:block; width:18px; height:2px;
+ background:var(--amber); flex-shrink:0;
+}
+
+p { margin-bottom:3.5mm; }
+strong { font-weight:600; }
+em { font-style:italic; color:var(--ink-mid); }
+
+/* ═══════════════════════════════════════════
+ SECTION RULE
+═══════════════════════════════════════════ */
+.rule-accent {
+ width:100%; height:1px;
+ background: linear-gradient(90deg, var(--forest), rgba(30,92,69,.1) 70%, transparent);
+ margin:5mm 0;
+}
+
+/* ═══════════════════════════════════════════
+ INFO / CALLOUT BOXES
+═══════════════════════════════════════════ */
+.box {
+ border-radius:3px; padding:11px 15px; margin:4mm 0;
+ border:1px solid; position:relative;
+}
+.box.box-title {
+ font-family:var(--font-head); font-size:8pt; font-weight:700;
+ letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px;
+ display:block;
+}
+.box p { margin-bottom:0; font-size:10pt; }
+.box p + p { margin-top:5px; }
+
+.box-forest { background:var(--forest-bg); border-color:#b2d8cb; }
+.box-forest.box-title { color:var(--forest); }
+.box-forest p { color:#2a5243; }
+
+.box-amber { background:var(--amber-bg); border-color:#f5d08a; }
+.box-amber.box-title { color:var(--amber); }
+.box-amber p { color:#7c4010; }
+
+.box-crimson { background:var(--crimson-bg); border-color:#e8b4bc; }
+.box-crimson.box-title { color:var(--crimson); }
+.box-crimson p { color:#6b1525; }
+
+.box-slate { background:var(--slate-bg); border-color:#b8cde8; }
+.box-slate.box-title { color:var(--slate); }
+.box-slate p { color:#1e3a5f; }
+
+/* ═══════════════════════════════════════════
+ PULL QUOTES / EXPERT TESTIMONIALS
+═══════════════════════════════════════════ */
+.pullquote {
+ margin:5mm 0; padding:14px 18px;
+ border-left:4px solid var(--amber);
+ background: var(--amber-bg);
+ border-radius:0 3px 3px 0;
+}
+.pullquote.quote-text {
+ font-family:var(--font-body); font-size:11.5pt; font-style:italic;
+ line-height:1.65; color:var(--ink); margin-bottom:7px;
+}
+.pullquote.quote-meta {
+ font-family:var(--font-mono); font-size:7.5pt; color:var(--amber);
+ letter-spacing:.06em; font-weight:500; font-style:normal;
+}
+.pullquote.quote-context {
+ font-family:var(--font-body); font-size:9.5pt; color:var(--ink-dim);
+ font-style:normal; margin-top:5px; line-height:1.5;
+}
+
+.expert-quote {
+ margin:5mm 0; padding:14px 18px;
+ background:var(--surface); border:1px solid var(--rule);
+ border-top:3px solid var(--forest); border-radius:0 0 3px 3px;
+}
+.expert-quote.eq-text {
+ font-family:var(--font-body); font-size:11pt; font-style:italic;
+ line-height:1.7; color:var(--ink); margin-bottom:8px;
+}
+.expert-quote.eq-speaker {
+ font-family:var(--font-head); font-size:8.5pt; font-weight:700;
+ color:var(--forest);
+}
+.expert-quote.eq-role {
+ font-family:var(--font-body); font-size:8.5pt; color:var(--ink-dim);
+ font-style:italic;
+}
+
+/* ═══════════════════════════════════════════
+ CODE / EXAMPLE BLOCKS
+═══════════════════════════════════════════ */
+.code-block {
+ background:#f7f5f0; border:1px solid var(--rule);
+ border-left:3px solid var(--forest);
+ border-radius:0 3px 3px 0;
+ padding:11px 14px; margin:3.5mm 0;
+ font-family:var(--font-mono); font-size:8pt; line-height:1.75;
+}
+.code-block.cb-label {
+ font-size:6.5pt; letter-spacing:.15em; text-transform:uppercase;
+ color:var(--ink-faint); margin-bottom:8px; display:block;
+ padding-bottom:6px; border-bottom:1px solid var(--rule);
+}
+.c-green { color:#1e5c45; font-weight:500; }
+.c-blue { color:#1a4a8a; }
+.c-amber { color:#b45309; font-weight:500; }
+.c-red { color:#9b1c2e; }
+.c-gray { color:var(--ink-dim); font-style:italic; font-family:var(--font-body); font-size:9pt; }
+
+/* ═══════════════════════════════════════════
+ TWO / THREE COLUMN GRIDS
+═══════════════════════════════════════════ */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4mm 0; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin:4mm 0; }
+
+/* ═══════════════════════════════════════════
+ CARDS
+═══════════════════════════════════════════ */
+.card {
+ background:var(--card-bg); border:1px solid var(--rule);
+ border-radius:3px; padding:10px 13px;
+}
+.card h5 {
+ font-family:var(--font-head); font-size:9.5pt; font-weight:700;
+ color:var(--ink); margin-bottom:5px;
+}
+.card p { font-size:9.5pt; margin-bottom:0; line-height:1.55; color:var(--ink-mid); }
+
+.card-forest { border-top:3px solid var(--forest); }
+.card-forest h5 { color:var(--forest); }
+.card-amber { border-top:3px solid var(--amber); }
+.card-amber h5 { color:var(--amber); }
+.card-crimson { border-top:3px solid var(--crimson); }
+.card-crimson h5 { color:var(--crimson); }
+.card-slate { border-top:3px solid var(--slate); }
+.card-slate h5 { color:var(--slate); }
+
+/* ═══════════════════════════════════════════
+ PROBABILITY TABLES
+═══════════════════════════════════════════ */
+.data-table {
+ width:100%; border-collapse:collapse; margin:3.5mm 0;
+ font-size:9.5pt;
+}
+.data-table thead tr { background:var(--surface); }
+.data-table th {
+ font-family:var(--font-head); font-size:7.5pt; font-weight:700;
+ letter-spacing:.06em; text-transform:uppercase; color:var(--ink-mid);
+ padding:6px 10px; text-align:left; border-bottom:2px solid var(--rule);
+}
+.data-table td {
+ padding:5px 10px; border-bottom:1px solid var(--rule-light);
+ vertical-align:middle;
+}
+.data-table tr:nth-child(even) td { background:#fdf9f3; }
+.data-table.mono { font-family:var(--font-mono); font-size:8.5pt; }
+.data-table.sel { color:var(--forest); font-weight:600; }
+.data-table.dim { color:var(--ink-faint); }
+.data-table.ok { color:var(--forest); font-family:var(--font-mono); font-size:8pt; font-weight:500; }
+.data-table.no { color:var(--crimson); font-family:var(--font-mono); font-size:8pt; font-weight:500; }
+
+/* probability bars */
+.bar-wrap { display:flex; align-items:center; gap:8px; }
+.bar {
+ height:8px; border-radius:2px; display:inline-block;
+ background: linear-gradient(90deg, var(--forest), #4ca882);
+}
+.bar-pct { font-family:var(--font-mono); font-size:7.5pt; color:var(--ink-dim); min-width:28px; }
+
+/* ═══════════════════════════════════════════
+ CSS PIPELINE DIAGRAM
+═══════════════════════════════════════════ */
+.pipeline-wrap { margin:4mm 0; }
+.pipeline-phase-label {
+ font-family:var(--font-head); font-size:7.5pt; font-weight:700;
+ letter-spacing:.1em; text-transform:uppercase;
+ padding:4px 12px; margin-bottom:0; display:inline-block;
+ border-radius:2px 2px 0 0;
+}
+.phase-ingestion { background:var(--forest); color:#fff; }
+.phase-retrieval { background:var(--amber); color:#fff; }
+.phase-generation { background:var(--slate); color:#fff; }
+
+.pipeline-row {
+ display:flex; align-items:stretch; margin-bottom:8px;
+ border:1.5px solid; border-radius:0 3px 3px 3px; overflow:hidden;
+}
+.pr-forest { border-color:var(--forest); background:var(--forest-bg); }
+.pr-amber { border-color:var(--amber); background:var(--amber-bg); }
+.pr-slate { border-color:var(--slate); background:var(--slate-bg); }
+
+.pipeline-steps {
+ display:flex; align-items:center; padding:10px 12px;
+ flex-wrap:wrap; gap:0; flex:1;
+}
+.pipe-step {
+ display:flex; flex-direction:column; align-items:center;
+ padding:4px 10px; text-align:center; min-width:22mm;
+}
+.pipe-icon { font-size:20pt; line-height:1.1; margin-bottom:4px; }
+.pipe-name {
+ font-family:var(--font-head); font-size:7pt; font-weight:600;
+ color:var(--ink); text-transform:uppercase; letter-spacing:.04em;
+ line-height:1.3;
+}
+.pipe-desc {
+ font-family:var(--font-body); font-size:7.5pt;
+ color:var(--ink-dim); line-height:1.3; margin-top:2px;
+ font-style:italic;
+}
+.pipe-arrow {
+ font-size:14pt; color:var(--rule); padding:0 2px;
+ align-self:center; flex-shrink:0;
+}
+
+/* ═══════════════════════════════════════════
+ ORACLE VECTOR SEARCH PIPELINE (horizontal)
+═══════════════════════════════════════════ */
+.vec-pipeline {
+ background:var(--surface); border:1px solid var(--rule);
+ border-radius:3px; padding:12px; margin:4mm 0;
+}
+.vp-title {
+ font-family:var(--font-head); font-size:8pt; font-weight:700;
+ color:var(--forest); letter-spacing:.06em; text-transform:uppercase;
+ margin-bottom:10px; text-align:center;
+}
+.vp-row {
+ display:flex; align-items:flex-start; justify-content:space-between;
+ flex-wrap:wrap; gap:4px;
+}
+.vp-step {
+ flex:1; min-width:18mm; display:flex; flex-direction:column;
+ align-items:center; text-align:center; padding:6px 4px;
+ background:var(--card-bg); border:1px solid var(--rule); border-radius:3px;
+}
+.vp-icon { font-size:16pt; line-height:1.2; }
+.vp-name {
+ font-family:var(--font-head); font-size:6.5pt; font-weight:700;
+ color:var(--ink); text-transform:uppercase; letter-spacing:.04em;
+ margin-top:3px; line-height:1.3;
+}
+.vp-sub {
+ font-family:var(--font-body); font-size:7pt; color:var(--ink-dim);
+ font-style:italic; line-height:1.3;
+}
+.vp-arrow {
+ font-size:12pt; color:var(--ink-faint);
+ align-self:center; flex-shrink:0; padding:0 2px;
+}
+.vp-note {
+ font-family:var(--font-body); font-size:8.5pt; font-style:italic;
+ color:var(--ink-mid); text-align:center; margin-top:8px;
+ border-top:1px solid var(--rule); padding-top:6px;
+}
+
+/* ═══════════════════════════════════════════
+ INTEGRATION ARCH
+═══════════════════════════════════════════ */
+.arch-wrap {
+ background:var(--surface); border:1px solid var(--rule);
+ border-radius:3px; padding:12px; margin:4mm 0;
+}
+.arch-top-bar {
+ background:var(--ink); color:#f0ede6;
+ font-family:var(--font-head); font-size:9pt; font-weight:700;
+ letter-spacing:.06em; text-align:center; padding:7px 16px;
+ border-radius:2px; margin-bottom:8px;
+}
+.arch-cols { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.arch-col { display:flex; flex-direction:column; gap:4px; }
+.arch-col-label {
+ font-family:var(--font-head); font-size:7pt; font-weight:700;
+ letter-spacing:.1em; text-transform:uppercase; text-align:center;
+ padding:4px; border-radius:2px; margin-bottom:2px;
+}
+.acl-green { background:var(--forest); color:#fff; }
+.acl-amber { background:var(--amber-mid); color:#fff; }
+.arch-cell {
+ font-family:var(--font-head); font-size:8pt; font-weight:600;
+ text-align:center; padding:7px 10px; border-radius:2px;
+ border:1px solid; line-height:1.4;
+}
+.ac-forest { background:var(--forest-bg); border-color:#b2d8cb; color:var(--forest); }
+.ac-amber { background:var(--amber-bg); border-color:#f5d08a; color:var(--amber); }
+.ac-slate { background:var(--slate-bg); border-color:#b8cde8; color:var(--slate); }
+.ac-plain { background:var(--card-bg); border-color:var(--rule); color:var(--ink-mid); }
+.arch-arrow { text-align:center; color:var(--rule); font-size:11pt; }
+
+/* ═══════════════════════════════════════════
+ WORD EMBEDDING CHART (SVG-based)
+═══════════════════════════════════════════ */
+.scatter-outer {
+ background:var(--card-bg); border:1px solid var(--rule);
+ border-radius:3px; padding:12px; margin:4mm 0;
+}
+.scatter-title {
+ font-family:var(--font-head); font-size:8pt; font-weight:700;
+ color:var(--ink); letter-spacing:.05em; margin-bottom:4px;
+ text-align:center; text-transform:uppercase;
+}
+.scatter-subtitle {
+ font-family:var(--font-body); font-size:8.5pt; font-style:italic;
+ color:var(--ink-dim); text-align:center; margin-bottom:10px;
+}
+.scatter-legend {
+ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;
+ justify-content:center;
+}
+.leg {
+ display:flex; align-items:center; gap:5px;
+ font-family:var(--font-body); font-size:8pt; color:var(--ink-mid);
+}
+.leg-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+
+/* ═══════════════════════════════════════════
+ HALLUCINATION COMPARISON
+═══════════════════════════════════════════ */
+.compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4mm 0; }
+.compare-col {
+ padding:10px 13px; border-radius:3px; border:1px solid;
+}
+.compare-col.col-label {
+ font-family:var(--font-head); font-size:7.5pt; font-weight:700;
+ letter-spacing:.08em; text-transform:uppercase; margin-bottom:7px;
+ display:block; padding-bottom:6px; border-bottom:1px solid;
+}
+.cc-true { background:var(--forest-bg); border-color:#b2d8cb; }
+.cc-true.col-label { color:var(--forest); border-color:#b2d8cb; }
+.cc-false { background:var(--crimson-bg); border-color:#e8b4bc; }
+.cc-false.col-label { color:var(--crimson); border-color:#e8b4bc; }
+.compare-col p { font-size:9.5pt; margin:0; line-height:1.6; }
+
+/* ═══════════════════════════════════════════
+ ETHICS GRID
+═══════════════════════════════════════════ */
+.ethics-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:4mm 0; }
+.ethics-card {
+ border:1px solid var(--rule); border-radius:3px;
+ border-top:3px solid; padding:10px 13px; background:var(--card-bg);
+}
+.ec-forest { border-top-color:var(--forest); }
+.ec-amber { border-top-color:var(--amber); }
+.ec-slate { border-top-color:var(--slate); }
+.ec-crimson{ border-top-color:var(--crimson);}
+.e-num {
+ font-family:var(--font-head); font-size:18pt; font-weight:800;
+ line-height:1; margin-bottom:3px;
+}
+.ec-forest.e-num { color:var(--forest); }
+.ec-amber.e-num { color:var(--amber); }
+.ec-slate.e-num { color:var(--slate); }
+.ec-crimson.e-num{ color:var(--crimson);}
+.e-title {
+ font-family:var(--font-head); font-size:8pt; font-weight:700;
+ letter-spacing:.06em; text-transform:uppercase; margin-bottom:5px;
+}
+.ec-forest.e-title { color:var(--forest); }
+.ec-amber.e-title { color:var(--amber); }
+.ec-slate.e-title { color:var(--slate); }
+.ec-crimson.e-title{ color:var(--crimson);}
+.ethics-card p { font-size:9pt; line-height:1.55; color:var(--ink-mid); margin:0; }
+
+/* ═══════════════════════════════════════════
+ PAGE FOOTER
+═══════════════════════════════════════════ */
+.pf {
+ position:absolute; bottom:8mm; left:var(--margin); right:var(--margin);
+ display:flex; justify-content:space-between; align-items:center;
+ border-top:1px solid var(--rule); padding-top:5px;
+ font-family:var(--font-mono); font-size:7pt; color:var(--ink-faint);
+}
+.pf-num {
+ font-family:var(--font-head); font-size:10pt; font-weight:700;
+ color:var(--forest);
+}
+
+/* ═══════════════════════════════════════════
+ PRINT
+═══════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════
+   REFERENCES PAGE
+═══════════════════════════════════════════ */
+.ref-list {
+  display:flex; flex-direction:column; gap:6px;
+  margin:3mm 0 5mm;
+}
+.ref-item {
+  display:flex; gap:12px; align-items:flex-start;
+  padding:9px 12px;
+  background:var(--card-bg); border:1px solid var(--rule);
+  border-left:3px solid var(--forest); border-radius:0 3px 3px 0;
+}
+.ref-num {
+  font-family:var(--font-head); font-size:11pt; font-weight:800;
+  color:var(--forest); min-width:20px; line-height:1.4; flex-shrink:0;
+}
+.ref-body {
+  font-family:var(--font-body); font-size:9pt; line-height:1.7; color:var(--ink-mid);
+}
+.ref-authors { display:block; font-weight:600; color:var(--ink); margin-bottom:1px; }
+.ref-year    { color:var(--ink-dim); }
+.ref-title   { display:block; font-style:italic; color:var(--ink); margin-top:1px; }
+.ref-journal { display:block; color:var(--ink-dim); font-size:8.5pt; }
+.ref-id      { display:block; font-family:var(--font-mono); font-size:7.5pt; color:var(--forest); margin-top:2px; }
+
+/* Author Signature */
+.author-sig  { margin-top:8mm; text-align:center; }
+.sig-line    { width:60mm; height:1px; margin:0 auto 6mm; background:linear-gradient(90deg,transparent,var(--forest),transparent); }
+.sig-name    { font-family:var(--font-head); font-size:14pt; font-weight:800; color:var(--ink); letter-spacing:-.02em; margin-bottom:4px; }
+.sig-roles   { font-family:var(--font-mono); font-size:7pt; font-weight:500; color:var(--forest); letter-spacing:.08em; text-transform:uppercase; line-height:1.8; }
+.sig-date    { font-family:var(--font-body); font-size:9pt; font-style:italic; color:var(--ink-faint); margin-top:6px; }
+
+@media print {
+ body { background:white; }
+.page { page-break-after:always; box-shadow:none; margin:0; }
+ @page { size:A4; margin:0; }
+}
+@media screen {
+.page { box-shadow: 0 4px 32px rgba(0,0,0,0.22); }
+}
+</style>
+</head>
+<body>
+
+<!-- ██████████████████ COVER ██████████████████ -->
+<div class="page cover">
+ <div class="cover-bg"></div>
+ <div class="cover-grid"></div>
+ <div class="cover-accent-bar"></div>
+ <div class="cover-circle"></div>
+ <div class="cover-circle2"></div>
+ <div class="cover-circle3"></div>
+
+ <div class="cover-content">
+ <div class="cover-eyebrow">Generative AI Practitioner &nbsp;·&nbsp; Technical Article</div>
+
+ <div class="cover-title-block">
+ <span class="cover-pre-title">A Complete Technical Guide</span>
+ <h1>
+ <span class="line1">Understanding</span>
+ <span class="line2">Artificial</span>
+ <span class="line3">Intelligence</span>
+ </h1>
+ </div>
+
+ <div class="cover-rule-group">
+ <div class="cover-rule-line"></div>
+ <div class="cover-rule-dot"></div>
+ <div class="cover-rule-line" style="max-width:20mm;"></div>
+ </div>
+
+ <p class="cover-desc">A technically rigorous, fully illustrated guide to how large language models predict, embed, retrieve, and sometimes confabulate — with every parameter that shapes their behaviour explained through real examples, diagrams, and expert testimonials.</p>
+
+ <div class="cover-author">
+  <div class="ca-name">Jun'dabi Abdul Kazembe</div>
+  <div class="ca-roles">
+    <span class="ca-role">IT Solutions Architect</span>
+    <span class="ca-sep">·</span>
+    <span class="ca-role">Full-Stack Software Developer</span>
+    <span class="ca-sep">·</span>
+    <span class="ca-role">Systems Administrator</span>
+    <span class="ca-sep">·</span>
+    <span class="ca-role">Data Analyst</span>
+    <span class="ca-sep">·</span>
+    <span class="ca-role">Generative AI Practitioner</span>
+    <span class="ca-sep">·</span>
+    <span class="ca-role">Information Systems Auditor</span>
+  </div>
+ </div>
+
+ <div class="cover-stats">
+ <div class="cover-stat"><span class="cs-num">14</span><span class="cs-label">Chapters</span></div>
+ <div class="cover-stat"><span class="cs-num">11</span><span class="cs-label">Pages</span></div>
+ <div class="cover-stat"><span class="cs-num">6</span><span class="cs-label">Diagrams</span></div>
+ <div class="cover-stat"><span class="cs-num">2</span><span class="cs-label">Expert Quotes</span></div>
+ </div>
+
+ <div class="toc-grid">
+ <div class="toc-item"><span class="toc-num">01</span><span class="toc-label">LLMs as Next-Word Predictors</span></div>
+ <div class="toc-item"><span class="toc-num">02</span><span class="toc-label">Prompt &amp; Prompt Engineering</span></div>
+ <div class="toc-item"><span class="toc-num">03</span><span class="toc-label">Chain-of-Thought Prompting</span></div>
+ <div class="toc-item"><span class="toc-num">04</span><span class="toc-label">Word Embeddings</span></div>
+ <div class="toc-item"><span class="toc-num">05</span><span class="toc-label">Semantic Similarity</span></div>
+ <div class="toc-item"><span class="toc-num">06</span><span class="toc-label">Temperature</span></div>
+ <div class="toc-item"><span class="toc-num">07</span><span class="toc-label">Top-K &amp; Top-P Sampling</span></div>
+ <div class="toc-item"><span class="toc-num">08</span><span class="toc-label">Frequency &amp; Presence Penalties</span></div>
+ <div class="toc-item"><span class="toc-num">09</span><span class="toc-label">Chat Model Parameters</span></div>
+ <div class="toc-item"><span class="toc-num">10</span><span class="toc-label">Hallucination: Causes, Examples &amp; Mitigation</span></div>
+ <div class="toc-item"><span class="toc-num">11</span><span class="toc-label">RAG Pipeline Deep Dive</span></div>
+ <div class="toc-item"><span class="toc-num">12</span><span class="toc-label">AI Vector Search &amp; Vector Databases</span></div>
+ <div class="toc-item"><span class="toc-num">13</span><span class="toc-label">GenAI Integration Architecture</span></div>
+ <div class="toc-item"><span class="toc-num">14</span><span class="toc-label">Responsible AI &amp; Ethics</span></div>
+ </div>
+
+ <div class="cover-footer">
+  <span>February 2026</span>
+  <strong>Jun'dabi Abdul Kazembe</strong>
+  <span>Generative AI Practitioner</span>
+ </div>
+ </div>
+</div>
+
+<!-- ██████████████████ PAGE 2 · LLMs as Next-Word Predictors ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">01 · LLMs as Next-Word Predictors</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 01</span>
+ <h2>LLMs as Next-Word Predictors</h2>
+ <p class="lead">Before everything else, one truth defines all of modern AI: a Large Language Model does not <em>remember</em> facts the way a person does. It <em>predicts</em> computing, one token at a time, what word is most likely to come next given all the words that came before.</p>
+
+ <p>When a user sends a prompt, the model tokenises it (splitting text into sub-word fragments of roughly 3–4 characters each), passes the entire token sequence through hundreds of transformer layers, and computes a probability distribution over every token in its vocabulary often 50,000 to 100,000 possibilities. It samples one token from that distribution, appends it to the sequence, and repeats. This loop continues until a stop token or maximum length is reached.</p>
+
+ <div class="box box-forest">
+ <span class="box-title">Core Mechanism </span>
+ <p><strong>Text prompts are how users interact with Large Language Models. LLM models attempt to produce the next series of words that are most likely to follow from the previous text.</strong> Every single word in the output is an independent probabilistic choice, conditioned on all prior context.</p>
+ </div>
+
+ <h3>The Gettysburg Address Example</h3>
+ <p>This is the most instructive demonstration of next-word prediction at work. Given the opening of a famous speech, the model doesn't "look up" the rest it predicts each word as the statistically most probable continuation:</p>
+
+ <div class="code-block">
+ <span class="cb-label">Prompt → Completion · Direct from </span>
+ <span class="c-green">PROMPT: "Four score and seven years ago our"</span><br><br>
+ <span class="c-blue">COMPLETION: "Forefathers brought forth a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.... that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth."</span><br><br>
+ <span class="c-gray">The model has processed this text so many times in training that the continuation is overwhelmingly likely. Each word was independently predicted given all prior context in the growing sequence.</span>
+ </div>
+
+ <h3>Training vs. Inference</h3>
+ <div class="two-col">
+ <div class="card card-forest">
+ <h5>Training Phase</h5>
+ <p>The model is exposed to hundreds of billions of tokens and adjusts its weights to minimise next-token prediction error. After training, weights are frozen. All "knowledge" is encoded as statistical associations not as a searchable database.</p>
+ </div>
+ <div class="card card-slate">
+ <h5>Inference Phase</h5>
+ <p>Given a prompt, the model performs a single forward pass per token no memory lookup, no database query. Everything is a matrix multiplication. Each token choice influences all subsequent choices through the attention mechanism.</p>
+ </div>
+ </div>
+
+ <p>This architecture is both the source of LLMs' extraordinary fluency and their most significant vulnerability. A system that has learned to produce statistically plausible text will produce plausible text regardless of whether it happens to be true.</p>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">2</span></div>
+</div>
+
+<!-- ██████████████████ PAGE 3 · Prompting ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">02–03 · Prompt &amp; Prompt Engineering</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 02</span>
+ <h2>Prompt &amp; Prompt Engineering</h2>
+ <p class="lead">The prompt is the entire input the model receives. Because the model predicts the most probable continuation of that input, every word you write shapes every word the model generates.</p>
+ <div class="rule-accent"></div>
+
+ <div class="two-col">
+ <div class="box box-forest">
+ <span class="box-title">Prompt (Definition)</span>
+ <p><strong>The input or initial text provided to the model.</strong> The model has no memory between sessions; the prompt is everything it knows about what you want. It can contain instructions, context, examples, constraints, a persona definition, or any combination.</p>
+ </div>
+ <div class="box box-amber">
+ <span class="box-title">Prompt Engineering (Definition)</span>
+ <p><strong>The process of iteratively refining a prompt for the purpose of eliciting a particular style of response.</strong> It is a write–test–observe–refine loop, not a one-shot activity. The model diagram shows: Prompt → INPUT → Large Language Model → OUTPUT → Generated Text.</p>
+ </div>
+ </div>
+
+ <h3>Why Precision Matters</h3>
+ <p>Since the model predicts the most statistically probable continuation of your input, an imprecise prompt generates an imprecise continuation. A well-structured prompt narrows the probability space so sharply that the model has almost no room to misinterpret the request.</p>
+
+ <div class="code-block">
+ <span class="cb-label">Prompt Quality Contrast</span>
+ <span class="c-red">✗ WEAK: "Tell me about machine learning."</span><br><br>
+ <span class="c-green">✓ ENGINEERED: "You are a senior data scientist writing technical documentation<br>
+ for junior developers with 6 months of Python experience. Explain<br>
+ supervised learning in three sections: (1) the mathematical objective<br>
+ — define loss function and gradient descent; (2) three canonical<br>
+ algorithms with one code snippet each; (3) common failure modes and<br>
+ how to detect them. Maximum 400 words per section."</span><br><br>
+ <span class="c-gray">The engineered prompt specifies role, audience, structure, mathematical depth, code policy, and length — leaving almost nothing ambiguous.</span>
+ </div>
+
+ <span class="ch-tag" style="margin-top:6mm;">Chapter 03</span>
+ <h2>Advanced Prompting Strategies</h2>
+ <div class="rule-accent"></div>
+
+ <h4>Chain-of-Thought (CoT) Prompting</h4>
+ <p><strong>Chain-of-Thought prompting</strong> provides examples in the prompt that include an explicit reasoning step before the final answer. By demonstrating that correct responses involve "thinking out loud," you activate the model's capacity for multi-step logical reasoning. Without CoT examples, models on arithmetic tasks frequently jump to wrong answers.</p>
+
+ <div class="code-block">
+ <span class="cb-label">Chain-of-Thought Example · [Wei et al., 2022]</span>
+ <span class="c-green">Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls.<br>
+Each can has 3 tennis balls. How many tennis balls does he have now?</span><br><br>
+ <span class="c-blue">A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls.<br>
+5 + 6 = 11. The answer is 11.</span><br><br>
+ <span class="c-gray">The reasoning chain is visible, making errors catchable and guiding the model's statistical predictions toward step-by-step solutions on subsequent questions.</span>
+ </div>
+
+ <h4>Zero-Shot Chain-of-Thought</h4>
+ <p><strong>Zero-Shot CoT</strong> applies chain-of-thought reasoning without providing any worked examples at all. The single trigger phrase "Let's think step by step." is appended to the prompt. Research by Kojima et al. (2022) showed this instruction significantly improves reasoning accuracy even with no demonstrations.</p>
+
+ <div class="code-block">
+ <span class="cb-label">Zero-Shot CoT Example · [Kojima et al., 2022]</span>
+ <span class="c-green">Q: A juggler can juggle 16 balls. Half of the balls are golf balls,<br>
+and half of the golf balls are blue. How many blue golf balls are there?</span><br><br>
+ <span class="c-blue">A: Let's think step by step. """</span><br><br>
+ <span class="c-gray">Model then reasons: 16 ÷ 2 = 8 golf balls; 8 ÷ 2 = 4 blue golf balls → Answer: 4.<br>Without the trigger, models frequently answer 8 or 16 incorrectly.</span>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">3</span></div>
+</div>
+
+<!-- ██████████████████ PAGE 4 · Word Embeddings & Semantic Similarity ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">04–05 · Embeddings &amp; Semantic Similarity</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 04</span>
+ <h2>Word Embeddings &amp; Semantic Similarity</h2>
+ <p class="lead">Language cannot be fed to a neural network as text. Every word must first be converted into a vector of numbers a mathematical coordinate in high-dimensional space. Words that are semantically similar end up numerically close. This is the engine behind semantic search and RAG retrieval.</p>
+ <div class="rule-accent"></div>
+
+ <p><strong>Word embeddings capture properties of words as numerical coordinates.</strong> The example from the course uses two axes: <strong>Age</strong> (vertical) and <strong>Size</strong> (horizontal) a deliberate simplification to show the principle. Real embedding models use hundreds to thousands of dimensions simultaneously, each encoding a different latent semantic property the model inferred from co-occurrence patterns during training.</p>
+
+ <!-- SVG Scatter Plot -->
+ <div class="scatter-outer">
+ <div class="scatter-title">Word Embeddings — 2D Projection (Age × Size)</div>
+ <div class="scatter-subtitle">Words with similar properties cluster together in embedding space. Three natural groups emerge: Animals, Fruits, and Places. Tiger sits near the animal cluster, closest to cat-family members a relationship inferred by the model without any explicit label.</div>
+
+ <svg viewBox="0 0 560 300" width="100%" style="display:block; border:1px solid #ddd8ce; border-radius:2px; background:#f9f7f2; font-family:'JetBrains Mono',monospace;">
+ <defs>
+ <pattern id="grid" width="56" height="30" patternUnits="userSpaceOnUse">
+ <path d="M 56 0 L 0 0 0 30" fill="none" stroke="#e8e4dc" stroke-width="0.5"/>
+ </pattern>
+ <marker id="arrowX" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+ <path d="M0,0 L6,3 L0,6 Z" fill="#a8b4c2"/>
+ </marker>
+ <marker id="arrowY" markerWidth="6" markerHeight="6" refX="3" refY="1" orient="auto">
+ <path d="M0,6 L3,0 L6,6 Z" fill="#a8b4c2"/>
+ </marker>
+ </defs>
+
+ <!-- Grid -->
+ <rect x="44" y="12" width="504" height="264" fill="url(#grid)"/>
+ <!-- Axes -->
+ <line x1="44" y1="276" x2="548" y2="276" stroke="#a8b4c2" stroke-width="1.2" marker-end="url(#arrowX)"/>
+ <line x1="44" y1="276" x2="44" y2="12" stroke="#a8b4c2" stroke-width="1.2" marker-end="url(#arrowY)"/>
+ <!-- Axis labels -->
+ <text x="296" y="296" font-size="9" fill="#6b7a91" text-anchor="middle" font-style="italic">d2 (Size)</text>
+ <text x="14" y="144" font-size="9" fill="#6b7a91" text-anchor="middle" font-style="italic" transform="rotate(-90,14,144)">d1 (Age)</text>
+ <!-- Tick labels X -->
+ <text x="156" y="288" font-size="7" fill="#b0bac8" text-anchor="middle">Low</text>
+ <text x="296" y="288" font-size="7" fill="#b0bac8" text-anchor="middle">Medium</text>
+ <text x="436" y="288" font-size="7" fill="#b0bac8" text-anchor="middle">High</text>
+ <!-- Tick labels Y -->
+ <text x="38" y="240" font-size="7" fill="#b0bac8" text-anchor="end">Young</text>
+ <text x="38" y="144" font-size="7" fill="#b0bac8" text-anchor="end">Adult</text>
+ <text x="38" y="52" font-size="7" fill="#b0bac8" text-anchor="end">Old</text>
+
+ <!-- Cluster halos -->
+ <ellipse cx="310" cy="115" rx="110" ry="72" fill="rgba(30,92,69,0.06)" stroke="#1e5c45" stroke-width="0.8" stroke-dasharray="5,3"/>
+ <ellipse cx="120" cy="215" rx="68" ry="50" fill="rgba(180,83,9,0.06)" stroke="#b45309" stroke-width="0.8" stroke-dasharray="5,3"/>
+ <ellipse cx="440" cy="225" rx="75" ry="36" fill="rgba(30,58,95,0.06)" stroke="#1e3a5f" stroke-width="0.8" stroke-dasharray="5,3"/>
+
+ <!-- Cluster labels -->
+ <rect x="245" y="52" width="84" height="17" rx="2" fill="rgba(30,92,69,0.1)" stroke="#1e5c45" stroke-width="0.5"/>
+ <text x="287" y="64" font-size="7.5" fill="#1e5c45" text-anchor="middle" font-weight="700" letter-spacing="1">ANIMALS</text>
+
+ <rect x="62" y="168" width="66" height="17" rx="2" fill="rgba(180,83,9,0.1)" stroke="#b45309" stroke-width="0.5"/>
+ <text x="95" y="180" font-size="7.5" fill="#b45309" text-anchor="middle" font-weight="700" letter-spacing="1">FRUITS</text>
+
+ <rect x="388" y="252" width="66" height="17" rx="2" fill="rgba(30,58,95,0.1)" stroke="#1e3a5f" stroke-width="0.5"/>
+ <text x="421" y="264" font-size="7.5" fill="#1e3a5f" text-anchor="middle" font-weight="700" letter-spacing="1">PLACES</text>
+
+ <!-- ANIMALS (dark green) -->
+ <circle cx="430" cy="44" r="6" fill="#1e5c45" stroke="white" stroke-width="1.5"/>
+ <text x="439" y="40" font-size="8.5" fill="#1e5c45" font-weight="600">elephant</text>
+
+ <circle cx="360" cy="76" r="6" fill="#1e5c45" stroke="white" stroke-width="1.5"/>
+ <text x="369" y="72" font-size="8.5" fill="#1e5c45" font-weight="600">lion</text>
+
+ <circle cx="295" cy="108" r="6" fill="#1e5c45" stroke="white" stroke-width="1.5"/>
+ <text x="304" y="104" font-size="8.5" fill="#1e5c45" font-weight="600">dog</text>
+
+ <circle cx="268" cy="128" r="6" fill="#1e5c45" stroke="white" stroke-width="1.5"/>
+ <text x="277" y="141" font-size="8.5" fill="#1e5c45" font-weight="600">cat</text>
+
+ <!-- Young animals (mid green) -->
+ <circle cx="196" cy="152" r="6" fill="#2d7a5e" stroke="white" stroke-width="1.5"/>
+ <text x="205" y="148" font-size="8.5" fill="#2d7a5e" font-weight="600">puppy</text>
+
+ <circle cx="230" cy="164" r="6" fill="#2d7a5e" stroke="white" stroke-width="1.5"/>
+ <text x="239" y="177" font-size="8.5" fill="#2d7a5e" font-weight="600">kitten</text>
+
+ <!-- TIGER (crimson, near animals) -->
+ <circle cx="390" cy="98" r="6" fill="#9b1c2e" stroke="white" stroke-width="1.5"/>
+ <text x="399" y="94" font-size="8.5" fill="#9b1c2e" font-weight="700">tiger</text>
+ <line x1="390" y1="104" x2="352" y2="130" stroke="#9b1c2e" stroke-width="0.7" stroke-dasharray="3,2"/>
+ <text x="290" y="144" font-size="7.5" fill="#9b1c2e" font-style="italic">closest to cat family</text>
+
+ <!-- FRUITS (amber) -->
+ <circle cx="96" cy="192" r="6" fill="#b45309" stroke="white" stroke-width="1.5"/>
+ <text x="105" y="188" font-size="8.5" fill="#b45309" font-weight="600">apple</text>
+
+ <circle cx="135" cy="203" r="6" fill="#b45309" stroke="white" stroke-width="1.5"/>
+ <text x="144" y="199" font-size="8.5" fill="#b45309" font-weight="600">strawberry</text>
+
+ <circle cx="74" cy="218" r="6" fill="#b45309" stroke="white" stroke-width="1.5"/>
+ <text x="83" y="214" font-size="8.5" fill="#b45309" font-weight="600">kiwi</text>
+
+ <circle cx="118" cy="231" r="6" fill="#b45309" stroke="white" stroke-width="1.5"/>
+ <text x="127" y="227" font-size="8.5" fill="#b45309" font-weight="600">pear</text>
+
+ <circle cx="88" cy="248" r="6" fill="#b45309" stroke="white" stroke-width="1.5"/>
+ <text x="97" y="261" font-size="8.5" fill="#b45309" font-weight="600">raspberry</text>
+
+ <!-- PLACES (navy) -->
+ <circle cx="396" cy="206" r="6" fill="#1e3a5f" stroke="white" stroke-width="1.5"/>
+ <text x="405" y="202" font-size="8.5" fill="#1e3a5f" font-weight="600">New York</text>
+
+ <circle cx="432" cy="224" r="6" fill="#1e3a5f" stroke="white" stroke-width="1.5"/>
+ <text x="441" y="220" font-size="8.5" fill="#1e3a5f" font-weight="600">Maine</text>
+
+ <circle cx="468" cy="238" r="6" fill="#1e3a5f" stroke="white" stroke-width="1.5"/>
+ <text x="477" y="234" font-size="8.5" fill="#1e3a5f" font-weight="600">Vermont</text>
+
+ </svg>
+
+ <div class="scatter-legend">
+ <div class="leg"><div class="leg-dot" style="background:#1e5c45;"></div>Animals (dog, cat, lion, elephant)</div>
+ <div class="leg"><div class="leg-dot" style="background:#2d7a5e;"></div>Young animals (puppy, kitten)</div>
+ <div class="leg"><div class="leg-dot" style="background:#9b1c2e;"></div>Tiger (near Animals, closest to cat family)</div>
+ <div class="leg"><div class="leg-dot" style="background:#b45309;"></div>Fruits (apple, strawberry, kiwi, pear, raspberry)</div>
+ <div class="leg"><div class="leg-dot" style="background:#1e3a5f;"></div>Places (New York, Maine, Vermont)</div>
+ </div>
+ </div>
+
+ <h3>Real Embeddings: All Dimensions Shown</h3>
+ <p>The 2D chart above is a simplified projection. Real embedding models produce vectors with hundreds of dimensions simultaneously. The course shows the actual numerical output from a production embedding model for four words. Each column is one learned dimension; the model inferred all of them without any human-defined labels:</p>
+
+ <table class="data-table">
+ <thead><tr><th>Word</th><th>d1: Age</th><th>d2: Size</th><th>d3</th><th>d4</th><th>d5</th><th>d6</th><th>d7</th><th>… (100s more)</th></tr></thead>
+ <tbody>
+ <tr><td class="mono sel">Puppy</td><td class="mono">0.07806</td><td class="mono">0.03909</td><td class="mono">0.0386</td><td class="mono">0.0219</td><td class="mono">-0.0142</td><td class="mono">0.0553</td><td class="mono">-0.0288</td><td class="mono dim">…</td></tr>
+ <tr><td class="mono">Kitten</td><td class="mono">0.0420</td><td class="mono">0.01056</td><td class="mono">0.5286</td><td class="mono">0.0381</td><td class="mono">0.0094</td><td class="mono">0.4102</td><td class="mono">0.0177</td><td class="mono dim">…</td></tr>
+ <tr><td class="mono">Cat</td><td class="mono">0.026</td><td class="mono">0.0568</td><td class="mono">0.4280</td><td class="mono">0.91606</td><td class="mono">0.0330</td><td class="mono">0.3875</td><td class="mono">0.0612</td><td class="mono dim">…</td></tr>
+ <tr><td class="mono">Dog</td><td class="mono">-0.0829</td><td class="mono">-0.4780</td><td class="mono">0.9280</td><td class="mono">0.8245</td><td class="mono">-0.2103</td><td class="mono">0.7641</td><td class="mono">0.1023</td><td class="mono dim">…</td></tr>
+ </tbody>
+ </table>
+
+ <h4>Semantic Similarity Cosine &amp; Dot Product</h4>
+ <p><strong>Embeddings that are numerically similar are also semantically similar.</strong> Two metrics measure this closeness:</p>
+
+ <div class="two-col">
+ <div class="box box-forest">
+ <span class="box-title">Cosine Similarity</span>
+ <p>Measures the cosine of the angle between two vectors. Returns 1.0 (identical meaning) to −1.0 (opposite). Invariant to vector magnitude only direction matters. Formula: <strong>cos(θ) = (A·B) / (|A|×|B|)</strong></p>
+ </div>
+ <div class="box box-amber">
+ <span class="box-title">Dot Product Similarity</span>
+ <p>Sum of element-wise products. Sensitive to both direction and magnitude. Used in fast approximate nearest-neighbour search. Formula: <strong>A·B = Σ(Aᵢ×Bᵢ)</strong>. E.g., embedding of "Puppy" will be more similar to "Dog" than to "Lion."</p>
+ </div>
+ </div>
+
+ <div class="box box-slate">
+ <span class="box-title">The Tiger Observation Course Highlight</span>
+ <p><strong>"Tiger" is closest to the Animals group, closer to cat family members.</strong> The model never saw a label saying "tiger = animal." It inferred this purely from co-occurrence: tiger appears alongside words like jungle, hunt, predator, and feline the same contexts as lion and cat. Three groups emerge naturally: <strong>Animals, Fruits, and Places</strong>.</p>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">4</span></div>
+</div>
+
+<!-- ██████████████████ PAGE 5 · Temperature, Top-K, Top-P ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">06–07 · Temperature · Top-K · Top-P</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 06</span>
+ <h2>Temperature</h2>
+ <p class="lead">Temperature is a hyperparameter that controls the randomness of the LLM output by reshaping the probability distribution over tokens before selection. It is the single most impactful generation parameter.</p>
+ <div class="rule-accent"></div>
+
+ <p>Before a token is sampled, each raw logit score is divided by the temperature value T. At T→0, the distribution collapses: the highest-probability token wins every time (deterministic). As T increases, lower-probability tokens receive progressively more of the probability mass the output grows more varied, creative, and unpredictable.</p>
+
+ <p>The course example: completing "The sky is ___". The model computes these raw probabilities over its vocabulary:</p>
+
+ <table class="data-table">
+ <thead><tr><th>Rank</th><th>Token</th><th>Probability</th><th>Visual Distribution</th></tr></thead>
+ <tbody>
+ <tr>
+ <td class="mono">1</td><td class="mono sel">blue</td><td class="mono">0.45</td>
+ <td><div class="bar-wrap"><div class="bar" style="width:54mm;"></div><span class="bar-pct">45%</span></div></td>
+ </tr>
+ <tr>
+ <td class="mono">2</td><td class="mono">the limit</td><td class="mono">0.25</td>
+ <td><div class="bar-wrap"><div class="bar" style="width:30mm; background:linear-gradient(90deg,#2d7a5e,#4ca882);"></div><span class="bar-pct">25%</span></div></td>
+ </tr>
+ <tr>
+ <td class="mono">3</td><td class="mono">red</td><td class="mono">0.20</td>
+ <td><div class="bar-wrap"><div class="bar" style="width:24mm; background:linear-gradient(90deg,#b45309,#d97706);"></div><span class="bar-pct">20%</span></div></td>
+ </tr>
+ <tr>
+ <td class="mono">4</td><td class="mono">tarnished</td><td class="mono">0.08</td>
+ <td><div class="bar-wrap"><div class="bar" style="width:9.6mm; background:linear-gradient(90deg,#9b1c2e,#c44058);"></div><span class="bar-pct">8%</span></div></td>
+ </tr>
+ <tr>
+ <td class="mono">5</td><td class="mono dim">water</td><td class="mono">0.02</td>
+ <td><div class="bar-wrap"><div class="bar" style="width:2.4mm; background:#9b1c2e;"></div><span class="bar-pct">2%</span></div></td>
+ </tr>
+ </tbody>
+ </table>
+
+ <div class="three-col" style="margin-top:4mm;">
+ <div class="card card-forest">
+ <h5>Temperature = 0<br>(Deterministic)</h5>
+ <p><strong>Always selects "blue."</strong> Same prompt → identical result every time. Use for: code generation, factual extraction, SQL generation, classification. Zero tolerance for variance.</p>
+ </div>
+ <div class="card card-amber">
+ <h5>Temperature 0.5–0.8<br>(Balanced)</h5>
+ <p>Distribution moderately flattened. "Blue" still likely; "red" and "the limit" become viable. Most production chat applications operate here coherent but not robotic.</p>
+ </div>
+ <div class="card card-crimson">
+ <h5>Temperature ≥ 1.0<br>(Creative)</h5>
+ <p><strong>Distribution significantly flattened.</strong> "Tarnished" and "water" become real candidates. Outputs grow surprising, poetic, and error-prone. Use for: creative writing, brainstorming, ideation only.</p>
+ </div>
+ </div>
+
+ <span class="ch-tag" style="margin-top:6mm;">Chapter 07</span>
+ <h2>Top-K &amp; Top-P Sampling</h2>
+ <div class="rule-accent"></div>
+
+ <p>After temperature scaling, Top-K and Top-P act as <em>candidate filters</em> restricting which tokens can even be sampled. The course uses the same prompt ("The name of that country is the ___") with five candidates: United (12%), Netherlands (2.7%), Czech (1.9%), Gambia (1.5%), Maldives (1%).</p>
+
+ <div class="two-col">
+ <div>
+ <h4>Top-K Sampling</h4>
+ <p><strong>Top-K tells the model to pick the next token from the top 'K' tokens in its list, sorted by probability.</strong> All tokens outside the top K receive zero probability.</p>
+ <table class="data-table">
+ <thead><tr><th>Token</th><th>Prob.</th><th>Top-K=3?</th></tr></thead>
+ <tbody>
+ <tr><td class="mono sel">United</td><td class="mono">12%</td><td class="ok">✓ IN POOL</td></tr>
+ <tr><td class="mono sel">Netherlands</td><td class="mono">2.7%</td><td class="ok">✓ IN POOL</td></tr>
+ <tr><td class="mono sel">Czech</td><td class="mono">1.9%</td><td class="ok">✓ IN POOL</td></tr>
+ <tr><td class="mono dim">Gambia</td><td class="mono">1.5%</td><td class="no">✗ EXCLUDED</td></tr>
+ <tr><td class="mono dim">Maldives</td><td class="mono">1%</td><td class="no">✗ EXCLUDED</td></tr>
+ </tbody>
+ </table>
+ <div class="box box-forest" style="margin-top:3mm;">
+ <p><strong>"If Top-K is set to 3, model will only pick from the top 3 options and ignore all others."</strong> Default = 0 (disabled).</p>
+ </div>
+ </div>
+ <div>
+ <h4>Top-P Sampling (Nucleus)</h4>
+ <p><strong>Top-P picks from the top tokens whose probabilities sum to at least P.</strong> The nucleus adapts to the distribution shape narrow when confident, wide when uncertain.</p>
+ <table class="data-table">
+ <thead><tr><th>Token</th><th>Prob.</th><th>Cumul.</th><th>P=0.15?</th></tr></thead>
+ <tbody>
+ <tr><td class="mono sel">United</td><td class="mono">12%</td><td class="mono">12.0%</td><td class="ok">✓ IN</td></tr>
+ <tr><td class="mono sel">Netherlands</td><td class="mono">2.7%</td><td class="mono amber" style="color:var(--amber); font-family:var(--font-mono); font-size:8pt;">14.7%</td><td class="ok">✓ IN</td></tr>
+ <tr><td class="mono dim">Czech</td><td class="mono">1.9%</td><td class="mono dim">16.6%</td><td class="no">✗ OUT</td></tr>
+ <tr><td class="mono dim">Gambia</td><td class="mono">1.5%</td><td class="mono dim">—</td><td class="no">✗ OUT</td></tr>
+ <tr><td class="mono dim">Maldives</td><td class="mono">1%</td><td class="mono dim">—</td><td class="no">✗ OUT</td></tr>
+ </tbody>
+ </table>
+ <div class="box box-amber" style="margin-top:3mm;">
+ <p><strong>"If P is set as.15, then it will only pick from United and Netherlands as their probabilities add up to 14.7%."</strong> Set to 1.0 or 0 to disable.</p>
+ </div>
+ </div>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">5</span></div>
+</div>
+
+<!-- ██████████████████ PAGE 6 · Penalties & Chat Model Params ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">08–09 · Penalties &amp; Chat Model Parameters</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 08</span>
+ <h2>Frequency &amp; Presence Penalties</h2>
+ <p class="lead">Without penalties, LLMs generating long text tend to loop repeating the same words, phrases, or ideas because they always appear as strong statistical candidates once they have been introduced. Penalties inject a cost for token reuse.</p>
+ <div class="rule-accent"></div>
+
+ <div class="box box-slate">
+ <span class="box-title">Why Penalties Exist</span>
+ <p><strong>These are useful if you want to get rid of repetition in your outputs.</strong> Once a token appears in the context, the model's statistics predict it will likely appear again it fits the established pattern. Penalties override that statistical pull artificially.</p>
+ </div>
+
+ <h4>Frequency Penalty Proportional Suppression</h4>
+ <p><strong>Frequency penalty penalises tokens that have already appeared in the preceding text (including the prompt), and scales based on how many times that token has appeared.</strong></p>
+
+ <div class="code-block">
+ <span class="cb-label">Frequency Penalty Mechanics</span>
+ <span class="c-green">adjusted_score = raw_score − (count_of_token × frequency_penalty)</span><br><br>
+ <span class="c-blue">A token appearing 10 times gets a higher penalty (reducing its probability of appearing) than a token appearing only once.</span><br><br>
+ <span class="c-gray">Effect: Continuous pressure toward new vocabulary throughout the output. The more a word has been used, the harder it becomes to use it again.</span>
+ </div>
+
+ <h4>Presence Penalty Binary Suppression</h4>
+ <p><strong>Presence penalty applies the penalty regardless of frequency. As long as the token has appeared once before, it will get penalised.</strong></p>
+
+ <div class="code-block">
+ <span class="cb-label">Presence Penalty Mechanics</span>
+ <span class="c-green">adjusted_score = raw_score − (presence_penalty if token_seen_before else 0)</span><br><br>
+ <span class="c-blue">A token seen once and a token seen 20 times receive the IDENTICAL penalty. The discount is flat and binary, not proportional.</span><br><br>
+ <span class="c-gray">Effect: Encourages topic breadth. Once a concept is touched, the model is pushed to explore new concepts rather than return to familiar ones.</span>
+ </div>
+
+ <div class="two-col">
+ <div class="card card-forest">
+ <h5>Use Frequency Penalty when…</h5>
+ <p>You need varied vocabulary and sentence structure within a focused topic. Product copy, marketing emails, educational content anywhere "fast → rapid → swift → efficient" beats "fast fast fast fast."</p>
+ </div>
+ <div class="card card-amber">
+ <h5>Use Presence Penalty when…</h5>
+ <p>You need broad topic coverage. Brainstorming, ideation lists, research summaries anywhere you want the model to explore many distinct concepts rather than elaborate endlessly on the first one mentioned.</p>
+ </div>
+ </div>
+
+ <span class="ch-tag" style="margin-top:6mm;">Chapter 09</span>
+ <h2>Chat Model Parameters Complete Reference</h2>
+ <div class="rule-accent"></div>
+
+ <p>The chat model interface exposes all four generation parameters in a single control panel, with Top P set to 0.75 by default, and Top K, Frequency Penalty, and Presence Penalty all at 0 (disabled).</p>
+
+ <table class="data-table">
+ <thead><tr><th>Parameter</th><th>Default</th><th>To Disable</th><th>Effect When Increased</th></tr></thead>
+ <tbody>
+ <tr>
+ <td class="mono sel">Top P</td>
+ <td class="mono">0.75</td>
+ <td class="mono">Set to 1.0 or 0</td>
+ <td>Widens nucleus; more diverse selection pool</td>
+ </tr>
+ <tr>
+ <td class="mono">Top K</td>
+ <td class="mono">0 (off)</td>
+ <td class="mono">Set to 0</td>
+ <td>Increases fixed candidate pool count</td>
+ </tr>
+ <tr>
+ <td class="mono">Frequency Penalty</td>
+ <td class="mono">0</td>
+ <td class="mono">Set to 0</td>
+ <td>Stronger proportional suppression of repeated tokens</td>
+ </tr>
+ <tr>
+ <td class="mono">Presence Penalty</td>
+ <td class="mono">0</td>
+ <td class="mono">Set to 0</td>
+ <td>Flat suppression of any previously seen token</td>
+ </tr>
+ </tbody>
+ </table>
+
+ <div class="box box-forest">
+ <span class="box-title">Parameter Definitions (from the Generation Interface)</span>
+ <p><strong>Top K:</strong> "Ensures that only the top k most likely tokens are considered in the generated output at each step. Default value is 0, which disables this method."<br><br>
+ <strong>Top P:</strong> "Ensures that only the most likely tokens with the sum of their probabilities are considered for generation at each step. Either set to 1.0 or 0 to disable."<br><br>
+ <strong>Frequency/Presence Penalty:</strong> "Assigns a penalty when a token appears frequently; goal is to produce less repetitive output. Set to 0 to disable."</p>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">6</span></div>
+</div>
+
+<!-- ██████████████████ PAGE 7 · Hallucination ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">10 · Hallucination</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 10</span>
+ <h2>Hallucination</h2>
+ <p class="lead">Hallucination is not an occasional bug it is an inherent property of how LLMs generate text. Understanding it technically and ethically is non-negotiable for anyone deploying AI in the real world.</p>
+ <div class="rule-accent"></div>
+
+ <div class="box box-crimson">
+ <span class="box-title">Definition</span>
+ <p><strong>Hallucination model generated text that is non-factual and/or ungrounded.</strong> The text is fluently written, confidently formatted, and indistinguishable in style from correct output but it is factually wrong, fabricated, or contradicts provided context.</p>
+ </div>
+
+ <h3>Expert Testimonials on Hallucination</h3>
+ <p>Two direct quotes from the transcript capture the nature of hallucination with precision. These are not hedged academic statements they are blunt technical assessments from practitioners:</p>
+
+ <!-- Expert Quote 1 - Samir Singh -->
+ <div class="expert-quote">
+ <p class="eq-text">"As you might imagine, the threat of hallucination is one of the biggest challenges to safely deploying LLMs. Think about LLMs as chameleons. They're trying to generate text that blends in with human generated text, whether or not it's true. It just needs to sound true."</p>
+ <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px;">
+ <div>
+ <span class="eq-speaker">Samir Singh</span>
+ <span class="eq-role"> · Professor, University of California, Irvine</span>
+ </div>
+ <span style="font-family:var(--font-mono); font-size:7pt; color:var(--ink-faint);">Quoted in Transcript</span>
+ </div>
+ </div>
+
+ <!-- Expert Quote 2 - Course instructor -->
+ <div class="expert-quote">
+ <p class="eq-text">"Additionally, I've heard it said, and I don't to whom this idea is attributed, that all text generated from an LLM is hallucinated. The generations just happen to be correct most of the time. All this is to say that LLM-generated text is somewhat unpredictable. It's often good, fluent, and accurate, but sometimes, it's not factual or even unsafe."</p>
+ <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px;">
+ <div>
+ <span class="eq-speaker">Course Instructor</span>
+ <span class="eq-role"> · </span>
+ </div>
+ <span style="font-family:var(--font-mono); font-size:7pt; color:var(--ink-faint);">Attribution unknown per instructor's own note</span>
+ </div>
+ </div>
+
+ <h3>Root Causes</h3>
+ <div class="two-col">
+ <div class="card card-crimson">
+ <h5>No Fact-Verification Layer</h5>
+ <p>The model optimises for statistical plausibility, not factual accuracy. It has no mechanism to check whether what it generates is true. A plausible-sounding confabulation scores identically to a correct statement on the training objective.</p>
+ </div>
+ <div class="card card-crimson">
+ <h5>Training Data Gaps &amp; Cutoffs</h5>
+ <p>When a topic was absent or rare in training, the model fills the gap rather than admitting ignorance. For events after the training cutoff, the model may confidently generate outdated or entirely invented information.</p>
+ </div>
+ <div class="card" style="border-top:3px solid var(--amber);">
+ <h5 style="color:var(--amber);">Entity Conflation</h5>
+ <p>The model may blend attributes from two similar entities attributing one person's biography to another, or merging two real papers into one non-existent citation with a plausible DOI and author list.</p>
+ </div>
+ <div class="card" style="border-top:3px solid var(--amber);">
+ <h5 style="color:var(--amber);">Fluency Over Truth</h5>
+ <p>Training rewards fluent, pattern-consistent text not accurate text. A well-constructed falsehood that fits established statistical patterns scores equally well as a correct statement during training.</p>
+ </div>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">7</span></div>
+</div>
+
+<!-- ██████████████████ PAGE 8 · Hallucination continued ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">10 · Hallucination (continued)</span></div>
+ <div class="page-inner">
+
+ <h3>What Hallucination Looks Like Real Course Example</h3>
+ <p>The course shows an actual hallucination from <strong>FLAN-T5</strong>, a real language model developed by Google. The factual context was provided to the model; its generated output directly contradicted that context while sounding authoritative and historically framed:</p>
+
+ <div class="compare-grid">
+ <div class="compare-col cc-true">
+ <span class="col-label">✓ Factual Reality (provided context)</span>
+ <p>The current driving convention in the United States is to drive on the <strong>right side of the road</strong>, in the same direction as traffic flows on streets and highways. This is based on the system used in the United Kingdom and most of Europe, which has been in use since the 19th century.</p>
+ </div>
+ <div class="compare-col cc-false">
+ <span class="col-label">✗ FLAN-T5 Hallucination (model output)</span>
+ <p><strong>During the first half of the 20th century, the United States gradually adopted the system of driving on the <em>left side of the road</em>. In the 1950s, most states had converted to this convention.</strong></p>
+ <p style="font-family:var(--font-mono); font-size:7.5pt; color:var(--crimson); margin-top:8px;">Source label: FLAN-T5</p>
+ </div>
+ </div>
+
+ <div class="box box-crimson">
+ <span class="box-title">Why This Is Alarming</span>
+ <p>The hallucinated text is more detailed, more historically framed, and more confidently written than the factual context. A reader with no prior knowledge would have no way to identify which column is correct. This is the core danger of hallucination in deployed systems.</p>
+ </div>
+
+ <h3>Mitigation Strategies</h3>
+
+ <div class="box box-amber">
+ <span class="box-title">Critical Finding from the Course Stated Verbatim</span>
+ <p><strong>"There are some methods that are claimed to reduce hallucination (e.g., retrieval-augmentation). There is no known methodology to reliably keep LLMs from hallucinating."</strong> Any claim of complete hallucination elimination overstates current capabilities.</p>
+ </div>
+
+ <div class="three-col">
+ <div class="card card-forest">
+ <h5>1. Retrieval-Augmented Generation (RAG)</h5>
+ <p>The most effective known technique. Ground the model in real, retrieved documents at query time. The model synthesises from provided facts rather than parametric memory. Dramatically reduces surface area for confabulation.</p>
+ </div>
+ <div class="card card-slate">
+ <h5>2. Temperature = 0</h5>
+ <p>Forces deterministic, highest-probability selection. Reduces creative confabulation. Not a complete solution models can still hallucinate at temperature 0 when their parametric knowledge is simply wrong or absent.</p>
+ </div>
+ <div class="card card-amber">
+ <h5>3. Mandatory Human Review</h5>
+ <p>For legal, medical, financial, and safety-critical domains: treat all model output as a first draft requiring expert verification. No algorithmic mitigation replaces this step in high-stakes applications.</p>
+ </div>
+ </div>
+
+ <h3>Hallucination as an Ethical Issue</h3>
+ <p>Hallucination stops being a technical inconvenience when it enters high-stakes domains. A fabricated drug interaction presented with the confidence of a trained medical model. A non-existent court precedent cited in a legal brief. A false statement attributed to a real person that damages their reputation. The technical reality <em>all LLM text is statistically generated and only probabilistically correct</em> has direct, serious ethical implications for every deployment decision made by every organisation using AI.</p>
+
+ <div class="pullquote">
+ <p class="quote-text">"LLM-generated text is somewhat unpredictable. It's often good, fluent, and accurate, but sometimes, it's not factual or even unsafe."</p>
+ <p class="quote-meta">Generative AI Course Transcript</p>
+ <p class="quote-context">This framing "often good, sometimes not factual or even unsafe" is the correct baseline expectation for anyone deploying LLMs in production. The default assumption must be verified output, not trusted output.</p>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">8</span></div>
+</div>
+
+<!-- PAGE 9 RAG Deep Dive -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">11 · RAG Pipeline Deep Dive</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 11</span>
+ <h2>Retrieval Augmented Generation (RAG)</h2>
+ <p class="lead">RAG is the most impactful architectural pattern in applied AI today. It solves LLMs' two biggest weaknesses outdated knowledge and hallucination by grounding every response in documents retrieved from a trusted, current knowledge base.</p>
+ <div class="rule-accent"></div>
+
+ <div class="box box-forest">
+ <span class="box-title">Definition From the Original Research Paper [Lewis et al., arXiv:2005.11401, 2021]</span>
+ <p><strong>Retrieval Augmented Generation (RAG) is a method for generating text using additional information fetched from an external data source.</strong> RAG models retrieve documents and pass them to a seq2seq model. Core benefits established by the paper:</p>
+ <p>• <strong>Mitigate bias in training data</strong> ground responses in current, curated documents instead of parametric knowledge<br>
+ • <strong>Overcome model limitations</strong> access knowledge not encoded in model weights<br>
+ • <strong>Handle queries without re-training</strong> update the knowledge base; the model weights stay frozen</p>
+ </div>
+
+ <h3>The RAG Pipeline Three Phases</h3>
+ <p>The course diagram shows the complete pipeline divided into INGESTION (offline, one-time), RETRIEVAL (online, per-query), and GENERATION (online, per-query). Every arrow in the diagram represents a concrete engineering step:</p>
+
+ <!-- Ingestion Phase -->
+ <div class="pipeline-wrap">
+ <div class="pipeline-phase-label phase-ingestion">INGESTION Offline / One-Time</div>
+ <div class="pipeline-row pr-forest">
+ <div class="pipeline-steps">
+ <div class="pipe-step">
+ <div class="pipe-icon">📄</div>
+ <div class="pipe-name">Documents</div>
+ <div class="pipe-desc">PDFs, web pages, wikis, DB exports</div>
+ </div>
+ <div class="pipe-arrow">→</div>
+ <div class="pipe-step">
+ <div class="pipe-icon">✂️</div>
+ <div class="pipe-name">Chunks</div>
+ <div class="pipe-desc">256–512 token text fragments</div>
+ </div>
+ <div class="pipe-arrow">→</div>
+ <div class="pipe-step">
+ <div class="pipe-icon">🔢</div>
+ <div class="pipe-name">Embedding</div>
+ <div class="pipe-desc">Embedding model → float vector</div>
+ </div>
+ <div class="pipe-arrow">→</div>
+ <div class="pipe-step">
+ <div class="pipe-icon">🗄️</div>
+ <div class="pipe-name">Index<br>(Database)</div>
+ <div class="pipe-desc">Vectors stored for similarity search</div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Retrieval Phase -->
+ <div class="pipeline-wrap">
+ <div class="pipeline-phase-label phase-retrieval">RETRIEVAL Online / Per-Query</div>
+ <div class="pipeline-row pr-amber">
+ <div class="pipeline-steps">
+ <div class="pipe-step">
+ <div class="pipe-icon">❓</div>
+ <div class="pipe-name">Query</div>
+ <div class="pipe-desc">User question → embed to vector</div>
+ </div>
+ <div class="pipe-arrow">→</div>
+ <div class="pipe-step">
+ <div class="pipe-icon">🔍</div>
+ <div class="pipe-name">Index</div>
+ <div class="pipe-desc">Nearest-neighbour similarity search</div>
+ </div>
+ <div class="pipe-arrow">→</div>
+ <div class="pipe-step">
+ <div class="pipe-icon">📑</div>
+ <div class="pipe-name">Top-K Results</div>
+ <div class="pipe-desc">K most semantically similar chunks</div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Generation Phase -->
+ <div class="pipeline-wrap">
+ <div class="pipeline-phase-label phase-generation">GENERATION Online / Per-Query</div>
+ <div class="pipeline-row pr-slate">
+ <div class="pipeline-steps">
+ <div class="pipe-step">
+ <div class="pipe-icon">📑</div>
+ <div class="pipe-name">Top-K Results</div>
+ <div class="pipe-desc">Retrieved chunks as context</div>
+ </div>
+ <div class="pipe-arrow">→</div>
+ <div class="pipe-step">
+ <div class="pipe-icon">🤖</div>
+ <div class="pipe-name">LLM</div>
+ <div class="pipe-desc">Generates grounded in retrieved facts</div>
+ </div>
+ <div class="pipe-arrow">→</div>
+ <div class="pipe-step">
+ <div class="pipe-icon">💬</div>
+ <div class="pipe-name">Response<br>to User</div>
+ <div class="pipe-desc">Factually grounded, cited output</div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <h3>Why Each Step Matters</h3>
+ <div class="two-col">
+ <div>
+ <h4>Chunking Strategy</h4>
+ <p>Splitting documents into chunks is not arbitrary. Chunks must be small enough to fit in the LLM's context window alongside the query and other retrieved chunks, but large enough to contain a complete, meaningful piece of information. A chunk that cuts a sentence in half loses its semantic coherence and will retrieve poorly against queries. Common strategies include fixed-size overlap, sentence-boundary splitting, and recursive character splitting.</p>
+ </div>
+ <div>
+ <h4>Why Retrieval Reduces Hallucination</h4>
+ <p>In a standard LLM call, the model must generate an answer from parametric memory knowledge that may be absent, outdated, or conflated. In a RAG call, the model receives the relevant facts as explicit context in the prompt. Its job shifts from "invent an answer" to "synthesise an answer from these documents." The probability mass concentrates around tokens consistent with the provided context, dramatically reducing confabulation.</p>
+ </div>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">9</span></div>
+</div>
+
+<!-- PAGE 10 AI Vector Search and Integration -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">12–13 · AI Vector Search &amp; Integration Architecture</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 12</span>
+ <h2>AI Vector Search Powers Gen AI Pipelines</h2>
+ <p class="lead">Modern vector databases embed vector storage and similarity search natively alongside relational data, meaning the full RAG pipeline from document ingestion to LLM generation can run within a single integrated database system.</p>
+ <div class="rule-accent"></div>
+
+ <p>The AI Vector Search pipeline spans six stages, ending with a RAG branch that feeds LLMs and delivers output to the User:</p>
+
+ <div class="vec-pipeline">
+ <div class="vp-title">AI Vector Search Pipeline — End-to-End Architecture</div>
+ <div class="vp-row">
+ <div class="vp-step">
+ <div class="vp-icon">🗂️</div>
+ <div class="vp-name">Data Sources</div>
+ <div class="vp-sub">Files, DBs, web, emails, social</div>
+ </div>
+ <div class="vp-arrow">→</div>
+ <div class="vp-step">
+ <div class="vp-icon">📂</div>
+ <div class="vp-name">Document Loaders</div>
+ <div class="vp-sub">Load unstructured content</div>
+ </div>
+ <div class="vp-arrow">→</div>
+ <div class="vp-step">
+ <div class="vp-icon">🔄</div>
+ <div class="vp-name">Document Transformation</div>
+ <div class="vp-sub">Text Splitting, Summarisation</div>
+ </div>
+ <div class="vp-arrow">→</div>
+ <div class="vp-step">
+ <div class="vp-icon">🧠</div>
+ <div class="vp-name">Embedding Models</div>
+ <div class="vp-sub">Text → float vectors</div>
+ </div>
+ <div class="vp-arrow">→</div>
+ <div class="vp-step">
+ <div class="vp-icon">🗄️</div>
+ <div class="vp-name">Vector Database<br>(e.g. Oracle 23ai)</div>
+ <div class="vp-sub">[1, 4, 8, …] stored natively</div>
+ </div>
+ <div class="vp-arrow">→</div>
+ <div class="vp-step">
+ <div class="vp-icon">🔍</div>
+ <div class="vp-name">Similarity Search</div>
+ <div class="vp-sub">Cosine / Dot Product retrieval</div>
+ </div>
+ </div>
+ <div class="vp-note">After Similarity Search → RAG branch → LLMs → User. <strong>Tight integration with 3rd party frameworks such as LangChain and LlamaIndex.</strong></div>
+ </div>
+
+ <div class="box box-forest">
+ <span class="box-title">AI Vector Search Capabilities</span>
+ <p><strong>AI Vector Search offers Vector Utilities (SQL and PL/SQL tools) to automatically generate vector embeddings from your unstructured data, either within or outside the database.</strong></p>
+ <p><strong>Select AI can generate SQL from Natural Language:</strong> a user types a plain-English question; the engine translates it to valid SQL against the database schema and returns structured results.</p>
+ </div>
+
+ <span class="ch-tag" style="margin-top:6mm;">Chapter 13</span>
+ <h2>Generative AI Service Integration Architecture</h2>
+ <div class="rule-accent"></div>
+
+ <p>The integration architecture shows how LLM Applications connect to both a native database vector store (left stack) and a cloud-hosted Generative AI service (right stack), both orchestrated through <strong>LangChain Community Classes</strong>:</p>
+
+ <div class="arch-wrap">
+ <div class="arch-top-bar">LLM Applications</div>
+ <div class="arch-cols">
+ <div class="arch-col">
+ <div class="arch-col-label acl-green">Database Vector Store Stack</div>
+ <div class="arch-cell ac-forest">LangChain Community Classes</div>
+ <div class="arch-arrow">↓</div>
+ <div class="arch-cell ac-forest">Database As Vector Store</div>
+ <div class="arch-arrow">↓</div>
+ <div class="arch-cell ac-plain">DB UTIL REST API</div>
+ <div class="arch-arrow">↓</div>
+ <div class="arch-cell ac-plain">SELECT AI (SQL from NL)</div>
+ </div>
+ <div class="arch-col">
+ <div class="arch-col-label acl-amber">Cloud AI Service Stack</div>
+ <div class="arch-cell ac-amber">LangChain Community Classes</div>
+ <div class="arch-arrow">↓</div>
+ <div class="arch-cell ac-amber">Cloud Generative AI Service</div>
+ <div class="arch-arrow">↓</div>
+ <div class="arch-cell ac-slate">Embedding Models &amp; Chat Models</div>
+ </div>
+ </div>
+ </div>
+
+ <div class="two-col" style="margin-top:4mm;">
+ <div>
+ <h4>Database as Vector Store</h4>
+ <p>Vector embeddings are stored natively in the database alongside relational tables. This eliminates a separate vector store infrastructure, preserves SQL JOIN capability between vector search results and business data, and applies existing security, backup, and compliance policies to vector data automatically.</p>
+ </div>
+ <div>
+ <h4>DB UTIL REST API and SELECT AI</h4>
+ <p>The DB UTIL REST API exposes vector utility functions (embedding generation, similarity search) to any HTTP-capable application. SELECT AI completes the loop by enabling plain-English queries to be converted to SQL so business users can interrogate the knowledge base without writing code or knowing the schema.</p>
+ </div>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">10</span></div>
+</div>
+
+<!-- ██████████████████ PAGE 11 · Responsible AI ██████████████████ -->
+<div class="page">
+ <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">14 · Responsible AI &amp; Ethics</span></div>
+ <div class="page-inner">
+
+ <span class="ch-tag">Chapter 14</span>
+ <h2>Responsible AI: Ethics vs. Technology</h2>
+ <p class="lead">The technical realities described in this article stochastic generation, intrinsic hallucination, parameters that trade accuracy for creativity carry real ethical weight when AI systems influence decisions that affect human lives.</p>
+ <div class="rule-accent"></div>
+
+ <p>Technology optimises for measurable objectives: prediction accuracy, throughput, engagement time, revenue. Ethics concerns values that are often immeasurable and contested: fairness, dignity, autonomy, truth. These frameworks frequently pull in opposite directions and it is the human choice of how to reconcile them that defines responsible AI.</p>
+
+ <div class="pullquote">
+ <p class="quote-text">"The most dangerous AI systems are not the ones that fail visibly. They are the ones that achieve their optimised objective while quietly causing harm along the way."</p>
+ <p class="quote-meta">Governing principle of Responsible AI design</p>
+ </div>
+
+ <h3>The Hallucination–Ethics Link</h3>
+ <p>The technical fact that <em>"all LLM text is hallucinated, the generations just happen to be correct most of the time"</em> has direct ethical implications. An LLM generating a false drug interaction is indistinguishable in format from one generating a correct one. A fabricated legal precedent could influence a ruling. A false statement about a real person, generated with the fluency and apparent authority of an AI system, can cause irreversible reputational damage. Deploying AI without hallucination safeguards is an ethical failure, not merely a technical shortcoming.</p>
+
+ <h3>Core Principles of Responsible AI</h3>
+
+ <div class="ethics-grid">
+ <div class="ethics-card ec-forest">
+ <div class="e-num">01</div>
+ <div class="e-title">Fairness &amp; Non-Discrimination</div>
+ <p>LLMs trained on historical data encode historical biases. A credit model trained on past approvals may perpetuate discriminatory patterns. Responsible AI requires demographic subgroup testing before deployment not after complaints. Bias that is discovered at scale has already caused harm at scale.</p>
+ </div>
+ <div class="ethics-card ec-amber">
+ <div class="e-num">02</div>
+ <div class="e-title">Transparency &amp; Explainability</div>
+ <p>When an AI model denies a loan, flags a medical case, or rejects a job application, affected individuals deserve an explanation in terms they can understand and challenge. "The model said so" is neither a legal nor an ethical explanation. Systems must be designed for interpretability from the ground up.</p>
+ </div>
+ <div class="ethics-card ec-slate">
+ <div class="e-num">03</div>
+ <div class="e-title">Privacy &amp; Data Sovereignty</div>
+ <p>Training data originates from people. PII embedded in training corpora can be reconstructed in outputs a documented risk in large LLMs. Organisations must audit data provenance, implement differential privacy where possible, honour data residency laws, and give individuals meaningful rights over how their data is used in model training.</p>
+ </div>
+ <div class="ethics-card ec-crimson">
+ <div class="e-num">04</div>
+ <div class="e-title">Accountability &amp; Human Oversight</div>
+ <p>Automated decisions at scale must not mean accountability disappears at scale. Every AI-influenced decision affecting a person's life employment, credit, health, legal status must have an identifiable human or organisation accountable for its consequences, with accessible recourse mechanisms for affected parties.</p>
+ </div>
+ <div class="ethics-card ec-forest">
+ <div class="e-num">05</div>
+ <div class="e-title">Safety &amp; Reliability</div>
+ <p>The parameters that increase output creativity temperature, Top-P, frequency penalty also increase hallucination risk. In safety-critical systems these must be constrained. RAG must be the primary knowledge source. For medical, legal, and engineering applications, human expert review is non-negotiable.</p>
+ </div>
+ <div class="ethics-card ec-amber">
+ <div class="e-num">06</div>
+ <div class="e-title">Human Dignity &amp; Autonomy</div>
+ <p>AI should amplify human capability and preserve genuine human agency not replace human judgement in decisions that define a person's life trajectory, nor manipulate behaviour through algorithmic persuasion designed to override autonomous choice. The design of AI systems must actively resist patterns that degrade human dignity.</p>
+ </div>
+ </div>
+
+ <div class="expert-quote">
+ <p class="eq-text">"Technology exists to serve humanity. The measure of good AI is not what it can do it is what it does, consistently, equitably, and with full accountability to the people whose lives it shapes. Every parameter choice, every deployment decision, every training data selection is an ethical act."</p>
+ <div>
+ <span class="eq-speaker">Governing Principle</span>
+ <span class="eq-role"> · Responsible AI Framework</span>
+ </div>
+ </div>
+
+ </div>
+ <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">11</span></div>
+</div>
+
+<!-- ██████████████████ REFERENCES PAGE ██████████████████ -->
+<div class="page">
+  <div class="rh"><span>Understanding Artificial Intelligence</span><span class="rh-right">References &amp; Source Acknowledgement</span></div>
+  <div class="page-inner">
+
+    <span class="ch-tag">References</span>
+    <h2>Sources &amp; Acknowledgements</h2>
+    <p class="lead">This article was prepared by Jun'dabi Abdul Kazembe as a personal technical study note while completing the Oracle Cloud Infrastructure (OCI) Generative AI Professional certification course. All concepts, examples, diagrams, expert quotes, and definitions originate from that course and its associated materials.</p>
+
+    <div class="rule-accent"></div>
+
+    <!-- Primary Course Source -->
+    <div class="box box-forest" style="margin-bottom:6mm;">
+      <span class="box-title">Primary Source</span>
+      <p style="font-size:10pt; line-height:1.9;">
+        <strong>Oracle Cloud Infrastructure Generative AI Professional</strong><br>
+        Oracle University — Oracle Corporation<br>
+        <em>Course modules: Introduction to Large Language Models, Prompt Engineering, Embeddings and Vector Search, Generation Parameters, Hallucination, Retrieval Augmented Generation, OCI Generative AI Integration, Responsible AI.</em><br>
+        Content includes slides, video transcripts, and interface demonstrations as captured during active course study.
+      </p>
+    </div>
+
+    <!-- Academic Papers cited in the course -->
+    <h3>Academic Papers Referenced in the Course</h3>
+
+    <div class="ref-list">
+
+      <div class="ref-item">
+        <div class="ref-num">1</div>
+        <div class="ref-body">
+          <span class="ref-authors">Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., &amp; Kiela, D.</span>
+          <span class="ref-year">(2021).</span>
+          <span class="ref-title">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.</span>
+          <span class="ref-journal">Advances in Neural Information Processing Systems (NeurIPS 2020).</span>
+          <span class="ref-id">arXiv:2005.11401v4 [cs.CL] 12 Apr 2021.</span>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">2</div>
+        <div class="ref-body">
+          <span class="ref-authors">Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., Chi, E., Le, Q., &amp; Zhou, D.</span>
+          <span class="ref-year">(2022).</span>
+          <span class="ref-title">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.</span>
+          <span class="ref-journal">Advances in Neural Information Processing Systems (NeurIPS 2022).</span>
+          <span class="ref-id">arXiv:2201.11903 [cs.CL].</span>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">3</div>
+        <div class="ref-body">
+          <span class="ref-authors">Kojima, T., Gu, S. S., Reid, M., Matsuo, Y., &amp; Iwasawa, Y.</span>
+          <span class="ref-year">(2022).</span>
+          <span class="ref-title">Large Language Models are Zero-Shot Reasoners.</span>
+          <span class="ref-journal">Advances in Neural Information Processing Systems (NeurIPS 2022).</span>
+          <span class="ref-id">arXiv:2205.11916 [cs.CL].</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Expert Quotes Attribution -->
+    <h3>Expert Testimonials Quoted</h3>
+
+    <div class="ref-list">
+      <div class="ref-item">
+        <div class="ref-num">4</div>
+        <div class="ref-body">
+          <span class="ref-authors">Singh, Samir.</span>
+          <span class="ref-title">"Think about LLMs as chameleons. They're trying to generate text that blends in with human generated text, whether or not it's true. It just needs to sound true."</span>
+          <span class="ref-journal">Quoted by the course instructor in the OCI Generative AI Professional course hallucination module.</span>
+          <span class="ref-id">Samir Singh — Professor, University of California, Irvine.</span>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">5</div>
+        <div class="ref-body">
+          <span class="ref-authors">Course Instructor (anonymous).</span>
+          <span class="ref-title">"All text generated from an LLM is hallucinated. The generations just happen to be correct most of the time."</span>
+          <span class="ref-journal">OCI Generative AI Professional course transcript, hallucination module. Attribution of the original idea noted as unknown by the instructor themselves.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hallucination example -->
+    <h3>Model Output Referenced</h3>
+    <div class="ref-list">
+      <div class="ref-item">
+        <div class="ref-num">6</div>
+        <div class="ref-body">
+          <span class="ref-authors">FLAN-T5 (Google Research).</span>
+          <span class="ref-title">Hallucination example demonstrating model-generated text contradicting provided factual context about US driving conventions.</span>
+          <span class="ref-journal">Output shown in the OCI Generative AI Professional course hallucination module as a live demonstration of non-factual generation.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Author note -->
+    <div class="box box-slate" style="margin-top:7mm;">
+      <span class="box-title">Author's Note</span>
+      <p>This document represents my own understanding and reformulation of the course material, prepared as a personal study artefact during certification pursuit. It is not an official publication of Oracle Corporation or Oracle University. All intellectual rights to the underlying course content remain with Oracle Corporation. The structure, presentation, visual design, and written interpretation in this document are my own original work.</p>
+    </div>
+
+    <!-- Author signature block -->
+    <div class="author-sig">
+      <div class="sig-line"></div>
+      <div class="sig-name">Jun'dabi Abdul Kazembe</div>
+      <div class="sig-roles">
+        IT Solutions Architect &nbsp;·&nbsp; Full-Stack Software Developer &nbsp;·&nbsp; Systems Administrator<br>
+        Data Analyst &nbsp;·&nbsp; Generative AI Practitioner &nbsp;·&nbsp; Information Systems Auditor
+      </div>
+      <div class="sig-date">February 2026</div>
+    </div>
+
+  </div>
+  <div class="pf"><span>Jun'dabi Abdul Kazembe &nbsp;·&nbsp; Understanding Artificial Intelligence</span><span class="pf-num">12</span></div>
+</div>
+
+</body>
+</html>
